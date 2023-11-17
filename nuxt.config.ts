@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  css: ['~/assets/css/tailwind/tailwind-global.css'],
+  css: ['~/assets/css/tailwind-global.css'],
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -17,10 +17,10 @@ export default defineNuxtConfig({
     // prefetch: false,
     // preconnect: true,
     // download: false,
-    outputDir: '~/assets/',
-    stylePath: 'css/google/nuxt-google-fonts.css',
+    outputDir: '~/assets/google/',
+    stylePath: 'css/nuxt-google-fonts.css',
     fontsDir: 'fonts',
-    overwriting: false,
+    overwriting: true,
     display: 'swap',
     families: {
       Montserrat: {
@@ -43,6 +43,9 @@ export default defineNuxtConfig({
   //     'Raleway', { family: 'Raleway', src: '~/assets/fonts/Raleway-Bold.woff2' },
   //   ],
   // },
+  fontMetrics: {
+    fonts: [ 'Montserrat', 'Raleway'],
+  },
   runtimeConfig: {
     public: {
       wordpressUrl: 'http://ordnung-headless-wordpress.local/graphql',
