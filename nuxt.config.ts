@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  css: ['~/assets/css/tailwind-global.css'],
+  css: ['~/assets/css/tailwind/tailwind-global.css'],
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     // preconnect: true,
     // download: false,
     outputDir: '~/assets/',
-    stylePath: 'css/nuxt-google-fonts.css',
+    stylePath: 'css/google/nuxt-google-fonts.css',
     fontsDir: 'fonts',
     overwriting: false,
     display: 'swap',
