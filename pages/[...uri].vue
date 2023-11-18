@@ -38,7 +38,7 @@
 
   // Get data from WP general settings for homepage and for pages/posts from the SEO plugin
   useSeoMeta({
-      title: data.value.title,
+    //   title: data.value.title,
       description: data.value.excerpt,
       twitterCard: 'summary_large_image',
       twitterTitle: 'UseSeoMeta - My Amazing Site',

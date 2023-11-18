@@ -10,8 +10,9 @@ export default defineNuxtConfig({
   },
   modules: [
     '@nuxtjs/fontaine',
-    '@nuxtjs/google-fonts'
-],
+    '@nuxtjs/google-fonts',
+    '@nuxtseo/module'
+  ],
   googleFonts: {
     // Used for external Google fonts
     // prefetch: false,
@@ -33,32 +34,24 @@ export default defineNuxtConfig({
       },
     },
   },
-  // Not necessary for Google fonts in Fontaine
-  // Custom local fonts individually named (no group family name) for Fontaine
-  // Configure @font-face rules/src in ~/assets/css/main.css
-  // fontMetrics: {
-  //   fonts: [
-  //     'Montserrat', { family: 'Montserrat', src: '~/assets/fonts/Montserrat-Medium.woff2' },
-  //     'Montserrat', { family: 'Montserrat', src: '~/assets/fonts/Montserrat-Bold.woff2' },
-  //     'Raleway', { family: 'Raleway', src: '~/assets/fonts/Raleway-Bold.woff2' },
-  //   ],
-  // },
+  // Fontaine font fallback list
   fontMetrics: {
     fonts: [ 'Montserrat', 'Raleway'],
   },
   runtimeConfig: {
     public: {
-      wordpressUrl: 'http://ordnung-headless-wordpress.local/graphql',
-      // site: 'https://ordnung.nl',
-      
-      site: {
-        url: 'https://ordnung.nl',
-        name: 'Ordnung',
-        // description: 'Custom headless Wordpress and Nuxt websites.',
-        defaultLocale: 'en',
-        trailingSlash: true,
-      },
+      wordpressUrl: 'http://ordnung-headless-wordpress.local/graphql',    
     }
+  },
+  site: {
+    identity: {
+      type: 'Organization'
+    },
+    url: 'https://ordnung.nl',
+    name: 'Ordnung - Custom Headless Wordpress',
+    description: 'Custom headless Wordpress and Nuxt websites.',
+    defaultLocale: 'en',
+    trailingSlash: true,
   },
   // nitro: {
   //   prerender: {
