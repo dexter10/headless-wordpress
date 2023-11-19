@@ -11,8 +11,29 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/fontaine',
     '@nuxtjs/google-fonts',
-    '@nuxtseo/module'
+    '@nuxtseo/module',
+    // 'nuxt-link-checker',
+    'nuxt-schema-org',
   ],
+  runtimeConfig: {
+    public: {
+      wpGraphqlUrl: 'http://ordnung-headless-wordpress.local/graphql',
+      // WP_GRAPHQL_URL: 'http://ordnung-headless-wordpress.local/graphql',
+      // WP_GRAPHQL_URL: process.env.WP_GRAPHQL_URL,
+      // Wordpress application password: name: graphql, pw: u4zL Y8EZ s8Mn lcXX RFde l5u5
+        // For schema-org plugin
+      site: {
+        identity: {
+          type: 'Organization'
+        },
+        url: 'https://ordnung.nl',
+        name: 'Ordnung',
+        description: 'Custom headless Wordpress and Nuxt websites.',
+        defaultLocale: 'en',
+        trailingSlash: true,
+      },
+    }
+  },
   googleFonts: {
     // Used for external Google fonts
     // prefetch: false,
@@ -38,21 +59,23 @@ export default defineNuxtConfig({
   fontMetrics: {
     fonts: [ 'Montserrat', 'Raleway'],
   },
-  runtimeConfig: {
-    public: {
-      wordpressUrl: 'http://ordnung-headless-wordpress.local/graphql',    
+
+  app: {
+    head: {
+      titleTemplate: '%s %separator %siteName',
     }
   },
-  site: {
-    identity: {
-      type: 'Organization'
-    },
-    url: 'https://ordnung.nl',
-    name: 'Ordnung - Custom Headless Wordpress',
-    description: 'Custom headless Wordpress and Nuxt websites.',
-    defaultLocale: 'en',
-    trailingSlash: true,
-  },
+  // For schema-org plugin
+  // site: {
+  //   identity: {
+  //     type: 'Organization'
+  //   },
+  //   url: 'https://ordnung.nl',
+  //   name: 'Ordnung',
+  //   description: 'Custom headless Wordpress and Nuxt websites.',
+  //   defaultLocale: 'en',
+  //   trailingSlash: true,
+  // },
   // nitro: {
   //   prerender: {
   //     routes: ['/', '/sitemap.xml']

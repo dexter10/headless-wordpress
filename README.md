@@ -73,3 +73,59 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+
+query getPost {
+  post(id: "46", idType: DATABASE_ID) {
+    title
+    blocks {
+      name
+      ... on CoreHeadingBlock {
+        attributes {
+          ... on CoreHeadingBlockAttributes {
+            align
+            anchor
+            backgroundColor
+            className
+            content
+            level
+            style
+            textAlign
+            textColor
+          }
+        }
+      }
+      ... on CoreParagraphBlock {
+        attributes {
+          ... on CoreParagraphBlockAttributes {
+            align
+            anchor
+            backgroundColor
+            className
+            content
+            dropCap
+            style
+            align
+            textColor
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+allWpPost {
+Edges {
+Node {
+databaseId
+Title
+}
+}
+}
+
+$P$BvCpgwrPQg2vw3nQx3AJaOtlTeZ.6H.
+
+$P$BvCpgwrPQg2vw3nQx3AJaOtlTeZ
+

@@ -4,7 +4,7 @@
   const route = useRoute();
   const uri = route.params.uri + '/';
   const config = useRuntimeConfig();
-  const {data, pending, refresh, error} = await useFetch(config.public.wordpressUrl, {
+  const {data, pending, refresh, error} = await useFetch(config.public.wpGraphqlUrl, {
     method: 'get',
     query: {
         query: `
@@ -13,9 +13,21 @@
                 ... on Post {
                     id
                     title
-                    excerpt
+                    rawExcerpt
                     date
                     content
+                    featuredImage {
+                      node {
+                        id
+                        altText
+                        sourceUrl
+                        mimeType
+                        mediaDetails {
+                          height
+                          width
+                        }
+                      }
+                    }
                 }
             }
         }
@@ -24,46 +36,49 @@
             uri: uri
         }
     },
+    
     transform(data:any){
         return data.data.nodeByUri
     }
+
   })
+  // console.log(data);
+  // !Important information about pagination (edges between collections of posts,etc.)
+  // https://www.wpgraphql.com/docs/connections
 
-  // Declare function from plugins/format-date.ts to avoid namespace conflicts
-  const formatDate = useNuxtApp().$formatDate;  
+  // Declare date transform function from plugins/format-date.ts to avoid namespace conflicts with date formats between WP and Nuxt.
+  const formatDate = useNuxtApp().$formatDate;
 
-  // useHead({
-  //   title: data.value.title
-  // })
+  const seoInfo = data.value;
 
-  // Get data from WP general settings for homepage and for pages/posts from the SEO plugin
   useSeoMeta({
-    //   title: data.value.title,
-      description: data.value.excerpt,
-      twitterCard: 'summary_large_image',
-      twitterTitle: 'UseSeoMeta - My Amazing Site',
-      twitterDescription: 'UseSeoMeta - My Amazing Site',
-      twitterImage: 'UseSeoMeta - My Amazing Site',
-      twitterImageAlt: 'UseSeoMeta - My Amazing Site',
-      ogTitle: 'UseSeoMeta - My Amazing Site',
-      ogDescription: 'UseSeoMeta - This is my amazing site, let me tell you all about it.',
-      ogImageUrl: 'https://example.com/image.png',
-      ogImageSecureUrl: 'https://example.com/image.png',
-      ogImageType: 'image/jpeg',
-      ogImageWidth: '1200',
-      ogImageHeight: '640',
-      ogImageAlt: 'Image Alt',
-
+    title: seoInfo.title,
+    description: seoInfo.rawExcerpt,
+    twitterCard: seoInfo.featuredImage.node.sourceUrl,
+    twitterTitle: seoInfo.title,
+    twitterDescription: seoInfo.rawExcerpt,
+    twitterImage: seoInfo.featuredImage.node.sourceUrl,
+    twitterImageAlt: seoInfo.featuredImage.node.altText,
+    ogTitle: seoInfo.title,
+    ogDescription: seoInfo.rawExcerpt,
+    ogImageUrl: seoInfo.featuredImage.node.sourceUrl,
+    ogImageSecureUrl: seoInfo.featuredImage.node.sourceUrl,
+    ogImageType: seoInfo.featuredImage.node.mimeType,
+    ogImageWidth: seoInfo.featuredImage.node.mediaDetails.width,
+    ogImageHeight: seoInfo.featuredImage.node.mediaDetails.height,
+    ogImageAlt: seoInfo.featuredImage.node.altText,
   })
 </script>
 
 <template>
-   <div>
-     <TheHeader></TheHeader>
-       <main class="bg-gray-100 container mx-auto mt-6 p-6 rounded-lg">
-           <h1>{{ data.title }} + Catch All</h1>
-           <div class="text-2xl mt-4">{{ formatDate(data.date) }}</div>
-           <article class="mt-4 space-y-2" v-html="data.content"></article>
-       </main>
-   </div>
+  <div>
+    <TheHeader></TheHeader>
+    <main class="bg-gray-100 container mx-auto mt-6 p-6 rounded-lg">
+      <h1>{{ data.title }} + Catch All</h1>
+      <div class="text-2xl mt-4">{{ formatDate(data.date) }}</div>
+      <div>{{ data.rawExcerpt }}</div>
+      <div>{{ data.featuredImage.node.sourceUrl}}</div>
+      <article class="mt-4 space-y-2" v-html="data.content"></article>
+    </main>
+  </div>
 </template>

@@ -1,18 +1,23 @@
 <script setup lang="ts">
     const route = useRoute()
     const config = useRuntimeConfig();
-    const { data, refresh, pending } = await useFetch(config.public.wordpressUrl, {
+    const { data, refresh, pending } = await useFetch(config.public.wpGraphqlUrl, {
         method: 'get',
         query: {
             query: `
-                query NewQuery {
+                query FrontpageQuery {
                     posts(first:10){
                         nodes {
                             title
                             date
-                            excerpt
-                            uri
+                            rawExcerpt
+                            uri                    
                         }
+                    }
+                    generalSettings {
+                        title
+                        description
+                        url
                     }
                 }`
             },
@@ -22,15 +27,14 @@
             }
         }
     );
-    // console.log( data.value?.[1]);
     useHead({
         bodyAttrs: {
             class: 'home'
         },
     })
-    // Get data from WP general settings for homepage and for pages/posts from the SEO plugin
+    // Frontpage - data from General Settings
     useSeoMeta({
-        title: 'UseSeoMeta - My Amazing Site',
+        title: 'test',
         description: 'Custom headless Wordpress and Nuxt websites.',
         twitterCard: 'summary_large_image',
         twitterTitle: 'UseSeoMeta - My Amazing Site',
@@ -45,7 +49,6 @@
         ogImageWidth: '1200',
         ogImageHeight: '640',
         ogImageAlt: 'Image Alt',
-
     })
 </script>
 
