@@ -2,7 +2,9 @@
 
     // define the props that this component will accept
     const props = defineProps<{
-        post: Record<'title' | 'date' | 'excerpt' | 'uri', string>
+        // post: Record<'title' | 'excerpt' | 'date' | 'posts.nodes.title' | 'posts.nodes.date' | 'posts.nodes.excerpt' | 'uri', string>
+        post: Record<'title' | 'date' | 'rawExcerpt' | 'uri', string>
+
     }>();
 
     // Declare function from plugins/format-date.ts to avoid namespace conflicts
@@ -26,8 +28,10 @@
         hover:scale-105"
         >
             <div>
-                <h2 class="font-bold text-2xl">{{ post.title }}</h2>
+                <h2 class="font-semibold text-2xl">{{ post.title }}</h2>
                 <p>{{ formatDate(post.date) }}</p>
+                <p>{{ post.rawExcerpt }}</p>
+
             </div>
         </div>
     </NuxtLink>

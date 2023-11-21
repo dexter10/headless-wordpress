@@ -74,6 +74,11 @@ bun run preview
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
+Contact Form Information:
+https://codingoblin.com/post-request-in-nuxt-3/
+
+Gutenberg Blocks Query:
+https://github.com/funkhaus/wp-gql-gutenberg/issues/52
 
 query getPost {
   post(id: "46", idType: DATABASE_ID) {

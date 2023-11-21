@@ -3,7 +3,7 @@
 
   const route = useRoute();
   const uri = route.params.uri + '/';
-  const config = useRuntimeConfig();
+  const config:any = useRuntimeConfig();
   const {data, pending, refresh, error} = await useFetch(config.public.wpGraphqlUrl, {
     method: 'get',
     query: {
@@ -49,24 +49,31 @@
   // Declare date transform function from plugins/format-date.ts to avoid namespace conflicts with date formats between WP and Nuxt.
   const formatDate = useNuxtApp().$formatDate;
 
-  const seoInfo = data.value;
+  const seoInfo           = data.value;
+  const title             = seoInfo.title;
+  const excerpt           = seoInfo.rawExcerpt;
+  const featuredImgUrl    = seoInfo.featuredImage.node.sourceUrl;
+  const featuredImgAlt    = seoInfo.featuredImage.node.altText;
+  const featuredImgMime   = seoInfo.featuredImage.node.mimeType;
+  const featuredImgWidth  = seoInfo.featuredImage.node.mediaDetails.width;
+  const featuredImgHeight = seoInfo.featuredImage.node.mediaDetails.height;
 
   useSeoMeta({
-    title: seoInfo.title,
-    description: seoInfo.rawExcerpt,
-    twitterCard: seoInfo.featuredImage.node.sourceUrl,
-    twitterTitle: seoInfo.title,
-    twitterDescription: seoInfo.rawExcerpt,
-    twitterImage: seoInfo.featuredImage.node.sourceUrl,
-    twitterImageAlt: seoInfo.featuredImage.node.altText,
-    ogTitle: seoInfo.title,
-    ogDescription: seoInfo.rawExcerpt,
-    ogImageUrl: seoInfo.featuredImage.node.sourceUrl,
-    ogImageSecureUrl: seoInfo.featuredImage.node.sourceUrl,
-    ogImageType: seoInfo.featuredImage.node.mimeType,
-    ogImageWidth: seoInfo.featuredImage.node.mediaDetails.width,
-    ogImageHeight: seoInfo.featuredImage.node.mediaDetails.height,
-    ogImageAlt: seoInfo.featuredImage.node.altText,
+    title: title,
+    description: excerpt,
+    twitterCard: featuredImgUrl,
+    twitterTitle: title,
+    twitterDescription: excerpt,
+    twitterImage: featuredImgUrl,
+    twitterImageAlt: featuredImgAlt,
+    ogTitle: title,
+    ogDescription: excerpt,
+    ogImageUrl: featuredImgUrl,
+    ogImageSecureUrl: featuredImgUrl,
+    ogImageType: featuredImgMime,
+    ogImageWidth: featuredImgWidth,
+    ogImageHeight: featuredImgHeight,
+    ogImageAlt: featuredImgAlt,
   })
 </script>
 

@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { stringLiteral } from '@babel/types';
+
     const route = useRoute()
-    const config = useRuntimeConfig();
-    const { data, refresh, pending } = await useFetch(config.public.wpGraphqlUrl, {
+    const config:any = useRuntimeConfig();
+
+    // Posts useFetch
+    const { data :posts, error, refresh, pending } = await useFetch(config.public.wpGraphqlUrl, {
         method: 'get',
         query: {
             query: `
@@ -14,41 +18,71 @@
                             uri                    
                         }
                     }
+                }`
+            },
+            transform( data:any ) {
+                return data.data.posts.nodes as Array<Record<'title' | 'date' | 'rawExcerpt' | 'uri', string>>;
+            }
+        }
+    );
+    
+    // SEO fetching from General Settings with Default featured image plugin installed
+    const { data :settings } = await useFetch(config.public.wpGraphqlUrl, {
+        method: 'get',
+        query: {
+            query: `
+                query SettingsQuery {
                     generalSettings {
                         title
                         description
                         url
+                        featuredImageUrl
+                        featuredImageAlt
+                        featuredImageMime
+                        featuredImageWidth
+                        featuredImageHeight
                     }
                 }`
             },
-            transform( data:any ) {
-                // add additional typing that will help Nuxt auto-complete code as you type
-                return data.data.posts.nodes as Array<Record<'title' | 'date' | 'excerpt' | 'uri', string>>;
-            }
+            deep: false,
+            // transform( data:any ) {
+                // No need to type the output for SEO below
+            // }
         }
     );
+
+    // Frontpage - data from General Settings if page is
+    const setting           = settings.value.data.generalSettings;
+    const title             = setting.title;
+    const description       = setting.description;
+    const featuredImgUrl    = setting.featuredImageUrl;
+    const featuredImgAlt    = setting.featuredImageAlt;
+    const featuredImgMime   = setting.featuredImageMime;
+    const featuredImgWidth  = setting.featuredImageWidth;
+    const featuredImgHeight = setting.featuredImageHeight;
+
     useHead({
+        title: title,
         bodyAttrs: {
             class: 'home'
         },
-    })
-    // Frontpage - data from General Settings
+    }),
     useSeoMeta({
-        title: 'test',
-        description: 'Custom headless Wordpress and Nuxt websites.',
-        twitterCard: 'summary_large_image',
-        twitterTitle: 'UseSeoMeta - My Amazing Site',
-        twitterDescription: 'UseSeoMeta - My Amazing Site',
-        twitterImage: 'UseSeoMeta - My Amazing Site',
-        twitterImageAlt: 'UseSeoMeta - My Amazing Site',
-        ogTitle: 'UseSeoMeta - My Amazing Site',
-        ogDescription: 'UseSeoMeta - This is my amazing site, let me tell you all about it.',
-        ogImageUrl: 'https://example.com/image.png',
-        ogImageSecureUrl: 'https://example.com/image.png',
-        ogImageType: 'image/jpeg',
-        ogImageWidth: '1200',
-        ogImageHeight: '640',
-        ogImageAlt: 'Image Alt',
+        title: title,
+        description: description,
+        twitterCard: featuredImgUrl,
+        twitterTitle: title,
+        twitterDescription: description,
+        twitterImage: featuredImgUrl,
+        twitterImageAlt: featuredImgAlt,
+        ogTitle: title,
+        ogDescription: description,
+        ogImageUrl: featuredImgUrl,
+        ogImageSecureUrl: featuredImgUrl,
+        ogImageType: featuredImgMime,
+        ogImageWidth: featuredImgWidth,
+        ogImageHeight: featuredImgHeight,
+        ogImageAlt: featuredImgAlt,
     })
 </script>
 
@@ -57,7 +91,8 @@
     <TheHeader></TheHeader>
     <div class="grid gap-8 grid-cols-1 lg:grid-cols-3 p-6">
       <p>Current route: {{ route.path }}home</p>
-      <Post v-for="post in data" :key="post.uri" :post="post"></Post>
+      <div v-if="error">{{ error.message }}</div>
+      <Post v-for="post in posts" :key="post.uri" :post="post"></Post>
     </div>
   </div>
 </template>

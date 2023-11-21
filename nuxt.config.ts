@@ -28,7 +28,7 @@ export default defineNuxtConfig({
         },
         url: 'https://ordnung.nl',
         name: 'Ordnung',
-        description: 'Custom headless Wordpress and Nuxt websites.',
+        // description: 'Description from Config.',
         defaultLocale: 'en',
         trailingSlash: true,
       },
