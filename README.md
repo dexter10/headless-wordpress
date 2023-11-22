@@ -80,6 +80,20 @@ https://codingoblin.com/post-request-in-nuxt-3/
 Gutenberg Blocks Query:
 https://github.com/funkhaus/wp-gql-gutenberg/issues/52
 
+query NewQuery {
+  menus(where: {id: 6}) {
+    nodes {
+      menuItems {
+        nodes {
+          uri
+          label
+          title
+        }
+      }
+    }
+  }
+}
+
 query getPost {
   post(id: "46", idType: DATABASE_ID) {
     title

@@ -44,10 +44,7 @@ import { stringLiteral } from '@babel/types';
                     }
                 }`
             },
-            deep: false,
-            // transform( data:any ) {
-                // No need to type the output for SEO below
-            // }
+            deep: false
         }
     );
 
@@ -62,7 +59,6 @@ import { stringLiteral } from '@babel/types';
     const featuredImgHeight = setting.featuredImageHeight;
 
     useHead({
-        title: title,
         bodyAttrs: {
             class: 'home'
         },

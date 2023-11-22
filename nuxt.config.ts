@@ -15,6 +15,15 @@ export default defineNuxtConfig({
     // 'nuxt-link-checker',
     'nuxt-schema-org',
   ],
+  site: {
+    identity: {
+      type: 'Organization'
+    },
+    url: 'https://ordnung.nl',
+    name: 'Ordnung',
+    defaultLocale: 'en',
+    trailingSlash: true,
+  },
   runtimeConfig: {
     public: {
       wpGraphqlUrl: 'http://ordnung-headless-wordpress.local/graphql',
@@ -22,16 +31,6 @@ export default defineNuxtConfig({
       // WP_GRAPHQL_URL: process.env.WP_GRAPHQL_URL,
       // Wordpress application password: name: graphql, pw: u4zL Y8EZ s8Mn lcXX RFde l5u5
         // For schema-org plugin
-      site: {
-        identity: {
-          type: 'Organization'
-        },
-        url: 'https://ordnung.nl',
-        name: 'Ordnung',
-        // description: 'Description from Config.',
-        defaultLocale: 'en',
-        trailingSlash: true,
-      },
     }
   },
   googleFonts: {
