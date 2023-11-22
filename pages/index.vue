@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { stringLiteral } from '@babel/types';
+    import { stringLiteral } from '@babel/types';
 
     const route = useRoute()
 
@@ -9,27 +9,33 @@ import { stringLiteral } from '@babel/types';
         variables: { first: 10 },
     });
 
-    // SEO from general settings query
+    // SEO query from WP general settings for frontpage blogs
     const { data:settings } = await useAsyncGql({
         operation: 'GeneralSettings',
     });
 
     // Intercept titles, featured images, excerpt, etc. for per posts/page SEO
-    interface Settingstypes {
-        title?: string;
-        description?: string;
-        featuedImageUrl?: string;
-        featuredImageAlt?: string;
-        featuredImageMime?: 'image/jpeg' | 'image/gif' | 'image/png';
-        featuredImageWidth?: string;
-        featuredImageHeight?: string;
-    }  
-    const setting = settings.value.generalSettings
+    // interface Settingstypes {
+    //     title: string;
+    //     description: string;
+    //     featuredImageUrl: string;
+    //     featuredImageAlt: string;
+    //     featuredImageMime: 'image/jpeg' | 'image/gif' | 'image/png';
+    //     featuredImageWidth: string;
+    //     featuredImageHeight: string;
+    // }  
+    const setting = settings.value.generalSettings;
+
+    console.log(setting);
 
     useHead({
         bodyAttrs: {
             class: 'home'
         },
+        // meta: [
+        //     // Use og:image:type here because of the type error in useSeoMeta - ogImageType
+        //     { property: 'og:image:type', content: setting?.featuredImageMime }
+        // ],
     }),
     useSeoMeta({
         title: setting?.title,
@@ -45,7 +51,6 @@ import { stringLiteral } from '@babel/types';
         ogImageSecureUrl: setting?.featuredImageUrl,
         ogImageWidth: setting?.featuredImageWidth,
         ogImageHeight: setting?.featuredImageHeight,
-        ogImageAlt: setting?.featuredImageAlt,
     })
 </script>
 
