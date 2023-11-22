@@ -1,11 +1,6 @@
 <script setup lang="ts">
 
-    // define the props that this component will accept
-    const props = defineProps<{
-        // post: Record<'title' | 'excerpt' | 'date' | 'posts.nodes.title' | 'posts.nodes.date' | 'posts.nodes.excerpt' | 'uri', string>
-        post: Record<'title' | 'date' | 'rawExcerpt' | 'uri', string>
-
-    }>();
+    const { post } = defineProps(['post']);
 
     // Declare function from plugins/format-date.ts to avoid namespace conflicts
     const formatDate = useNuxtApp().$formatDate;

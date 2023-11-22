@@ -1,0 +1,10 @@
+query Posts($first: Int = 10) {
+    posts(first: $first) {
+        nodes {
+            title
+            date
+            rawExcerpt
+            uri                    
+        }
+    }
+}

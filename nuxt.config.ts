@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@nuxtseo/module',
     // 'nuxt-link-checker',
     'nuxt-schema-org',
+    'nuxt-graphql-client'
   ],
   site: {
     identity: {
@@ -27,6 +28,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       wpGraphqlUrl: 'http://ordnung-headless-wordpress.local/graphql',
+      // GQL_HOST: 'http://ordnung-headless-wordpress.local/graphql',
       // WP_GRAPHQL_URL: 'http://ordnung-headless-wordpress.local/graphql',
       // WP_GRAPHQL_URL: process.env.WP_GRAPHQL_URL,
       // Wordpress application password: name: graphql, pw: u4zL Y8EZ s8Mn lcXX RFde l5u5

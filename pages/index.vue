@@ -2,61 +2,29 @@
 import { stringLiteral } from '@babel/types';
 
     const route = useRoute()
-    const config:any = useRuntimeConfig();
 
-    // Posts useFetch
-    const { data :posts, error, refresh, pending } = await useFetch(config.public.wpGraphqlUrl, {
-        method: 'get',
-        query: {
-            query: `
-                query FrontpageQuery {
-                    posts(first:10){
-                        nodes {
-                            title
-                            date
-                            rawExcerpt
-                            uri                    
-                        }
-                    }
-                }`
-            },
-            transform( data:any ) {
-                return data.data.posts.nodes as Array<Record<'title' | 'date' | 'rawExcerpt' | 'uri', string>>;
-            }
-        }
-    );
-    
-    // SEO fetching from General Settings with Default featured image plugin installed
-    const { data :settings } = await useFetch(config.public.wpGraphqlUrl, {
-        method: 'get',
-        query: {
-            query: `
-                query SettingsQuery {
-                    generalSettings {
-                        title
-                        description
-                        url
-                        featuredImageUrl
-                        featuredImageAlt
-                        featuredImageMime
-                        featuredImageWidth
-                        featuredImageHeight
-                    }
-                }`
-            },
-            deep: false
-        }
-    );
+    // Posts query
+    const { data:posts } = await useAsyncGql({
+        operation: 'Posts',
+        variables: { first: 10 },
+    });
 
-    // Frontpage - data from General Settings if page is
-    const setting           = settings.value.data.generalSettings;
-    const title             = setting.title;
-    const description       = setting.description;
-    const featuredImgUrl    = setting.featuredImageUrl;
-    const featuredImgAlt    = setting.featuredImageAlt;
-    const featuredImgMime   = setting.featuredImageMime;
-    const featuredImgWidth  = setting.featuredImageWidth;
-    const featuredImgHeight = setting.featuredImageHeight;
+    // SEO from general settings query
+    const { data:settings } = await useAsyncGql({
+        operation: 'GeneralSettings',
+    });
+
+    // Intercept titles, featured images, excerpt, etc. for per posts/page SEO
+    interface Settingstypes {
+        title?: string;
+        description?: string;
+        featuedImageUrl?: string;
+        featuredImageAlt?: string;
+        featuredImageMime?: 'image/jpeg' | 'image/gif' | 'image/png';
+        featuredImageWidth?: string;
+        featuredImageHeight?: string;
+    }  
+    const setting = settings.value.generalSettings
 
     useHead({
         bodyAttrs: {
@@ -64,21 +32,20 @@ import { stringLiteral } from '@babel/types';
         },
     }),
     useSeoMeta({
-        title: title,
-        description: description,
-        twitterCard: featuredImgUrl,
-        twitterTitle: title,
-        twitterDescription: description,
-        twitterImage: featuredImgUrl,
-        twitterImageAlt: featuredImgAlt,
-        ogTitle: title,
-        ogDescription: description,
-        ogImageUrl: featuredImgUrl,
-        ogImageSecureUrl: featuredImgUrl,
-        ogImageType: featuredImgMime,
-        ogImageWidth: featuredImgWidth,
-        ogImageHeight: featuredImgHeight,
-        ogImageAlt: featuredImgAlt,
+        title: setting?.title,
+        description: setting?.description,
+        twitterCard: 'summary_large_image',
+        twitterTitle: setting?.title,
+        twitterDescription: setting?.description,
+        twitterImage: setting?.featuredImageUrl,
+        twitterImageAlt: setting?.featuredImageAlt,
+        ogTitle: setting?.title,
+        ogDescription: setting?.description,
+        ogImageUrl: setting?.featuredImageUrl,
+        ogImageSecureUrl: setting?.featuredImageUrl,
+        ogImageWidth: setting?.featuredImageWidth,
+        ogImageHeight: setting?.featuredImageHeight,
+        ogImageAlt: setting?.featuredImageAlt,
     })
 </script>
 
@@ -86,9 +53,8 @@ import { stringLiteral } from '@babel/types';
   <div>
     <TheHeader></TheHeader>
     <div class="grid gap-8 grid-cols-1 lg:grid-cols-3 p-6">
-      <p>Current route: {{ route.path }}home</p>
-      <div v-if="error">{{ error.message }}</div>
-      <Post v-for="post in posts" :key="post.uri" :post="post"></Post>
+        <p>Current route: {{ route.path }}home</p>
+        <Post v-for="post in posts.posts?.nodes" :key:any="post.uri" :post="post"></Post>
     </div>
   </div>
 </template>

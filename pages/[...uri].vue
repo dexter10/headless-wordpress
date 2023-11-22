@@ -3,6 +3,13 @@
 
   const route = useRoute();
   const uri = route.params.uri + '/';
+
+  // Post query
+  // const { data:posts } = await useAsyncGql({
+  //   operation: 'Posts',
+  //   variables: { uri: $uri },
+  // });
+  
   const config:any = useRuntimeConfig();
   const {data, pending, refresh, error} = await useFetch(config.public.wpGraphqlUrl, {
     method: 'get',

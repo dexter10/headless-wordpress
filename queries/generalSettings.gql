@@ -1,0 +1,12 @@
+query GeneralSettings {
+    generalSettings {
+        title
+        description
+        url
+        featuredImageUrl
+        featuredImageAlt
+        featuredImageMime
+        featuredImageWidth
+        featuredImageHeight
+    }
+}

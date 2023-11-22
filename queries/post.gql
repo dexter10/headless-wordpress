@@ -1,0 +1,23 @@
+query Post($uri: String!) {
+    nodeByUri(uri: $uri) {
+        ... on Post {
+            id
+            title
+            rawExcerpt
+            date
+            content
+            featuredImage {
+                node {
+                id
+                altText
+                sourceUrl
+                mimeType
+                mediaDetails {
+                    height
+                    width
+                }
+                }
+            }
+        }
+    }
+}
