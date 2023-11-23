@@ -4,7 +4,7 @@ query Posts($first: Int = 10) {
             title
             date
             rawExcerpt
-            uri                    
+            uri
         }
     }
 }

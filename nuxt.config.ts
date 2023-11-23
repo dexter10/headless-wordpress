@@ -16,19 +16,19 @@ export default defineNuxtConfig({
     'nuxt-schema-org',
     'nuxt-graphql-client'
   ],
-  site: {
-    identity: {
-      type: 'Organization'
-    },
-    url: 'https://ordnung.nl',
-    name: 'Ordnung',
-    defaultLocale: 'en',
-    trailingSlash: true,
-  },
   runtimeConfig: {
     public: {
       wpGraphqlUrl: 'http://ordnung-headless-wordpress.local/graphql',
-    }
+      site: {
+        identity: {
+          type: 'Organization'
+        },
+        url: 'https://www.ordnung.nl',
+        name: 'Ordnung',
+        defaultLocale: 'en',
+        trailingSlash: true,
+      },
+    },
   },
   googleFonts: {
     // Used for external Google fonts
