@@ -1,13 +1,20 @@
 <script setup lang="ts">
     import { stringLiteral } from '@babel/types';
 
-    const route = useRoute()
+    const route = useRoute() // Remove later
 
-    // Posts query
+    // Posts query (for multiple nuxt-graphql-client queries use useAsyncGql)
+    // !Important information about pagination (edges between collections of posts,etc.)
+    // https://www.wpgraphql.com/docs/connections
     const { data:posts } = await useAsyncGql({
         operation: 'Posts',
         variables: { first: 10 },
     });
+
+    // Deconstruct posts
+    // console.log(posts.value.posts, typeof posts);
+    const postsPaged:any = posts.value.posts?.nodes;
+
 
     // SEO query from WP general settings for frontpage blogs
     const { data:settings } = await useAsyncGql({
@@ -23,10 +30,11 @@
     //     featuredImageMime: 'image/jpeg' | 'image/gif' | 'image/png';
     //     featuredImageWidth: string;
     //     featuredImageHeight: string;
-    // }  
-    const setting = settings.value.generalSettings;
+    // }
+    // Deconstruct settings
+    const setting:any = settings.value.generalSettings;
 
-    console.log(setting);
+    console.log(settings.value, typeof settings);
 
     useHead({
         bodyAttrs: {
@@ -49,8 +57,10 @@
         ogDescription: setting?.description,
         ogImageUrl: setting?.featuredImageUrl,
         ogImageSecureUrl: setting?.featuredImageUrl,
+        ogImageType: setting?.featuredImageMime,
         ogImageWidth: setting?.featuredImageWidth,
         ogImageHeight: setting?.featuredImageHeight,
+        ogImageAlt: setting?.featuredImageAlt,
     })
 </script>
 
@@ -59,7 +69,11 @@
     <TheHeader></TheHeader>
     <div class="grid gap-8 grid-cols-1 lg:grid-cols-3 p-6">
         <p>Current route: {{ route.path }}home</p>
-        <Post v-for="post in posts.posts?.nodes" :key:any="post.uri" :post="post"></Post>
+        <!-- <div>{{ posts.posts?.nodes }}</div>
+        <div>{{ postsPaged.nodes }}</div> -->
+        <Post v-for="post in postsPaged" :key:any="post.uri" :post="post"></Post>
     </div>
   </div>
 </template>
+
+
