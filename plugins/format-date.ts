@@ -1,10 +1,10 @@
 export default defineNuxtPlugin((nuxtApp) => {
 
     // Simple formatter from Wordpress to European date format (m/d/y)
-    
+
     return {
         provide: {
-            formatDate : (time:string) => {
+            formatDate: (time: string) => {
                 const date = new Date(time);
 
                 // Get year, month, and day part from the date

@@ -1,10 +1,17 @@
 query Posts($first: Int = 10) {
-    posts(first: $first) {
-        nodes {
-            title
-            date
-            rawExcerpt
-            uri
+  posts(first: $first) {
+    nodes {
+      title
+      date
+      rawExcerpt
+      uri
+      featuredImage {
+        node {
+          sourceUrl
+          srcSet
+          sizes
         }
+      }
     }
+  }
 }

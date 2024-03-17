@@ -8,13 +8,18 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  plugins: [
+    // Only necessary for plugins in subfolders
+    // '~/plugins/foo/bar'
+    // '~/plugins/baz/baz'
+  ],
   modules: [
     '@nuxtjs/fontaine',
     '@nuxtjs/google-fonts',
+    '@nuxt/image',
     '@nuxtseo/module',
-    // 'nuxt-link-checker',
     'nuxt-schema-org',
-    'nuxt-graphql-client'
+    'nuxt-graphql-client',
   ],
   runtimeConfig: {
     public: {
@@ -25,8 +30,8 @@ export default defineNuxtConfig({
         },
         url: 'https://www.ordnung.nl',
         name: 'Ordnung',
-        defaultLocale: 'en',
-        trailingSlash: true,
+        defaultLocale: 'en_US',
+        trailingSlash: false,
       },
     },
   },
@@ -53,7 +58,7 @@ export default defineNuxtConfig({
   },
   // Fontaine font fallback list
   fontMetrics: {
-    fonts: [ 'Montserrat', 'Raleway'],
+    fonts: ['Montserrat', 'Raleway'],
   },
 
   app: {
@@ -61,6 +66,26 @@ export default defineNuxtConfig({
       titleTemplate: '%s %separator %siteName',
     }
   },
+
+  image: {
+    domains: ['http://ordnung-headless-wordpress.local'],
+    providers: {
+      myProvider: {
+        name: 'wordpress', // optional value to overrider provider name
+        provider: '~/providers/wordpress.ts', // Path to custom provider
+        options: {
+          // ... provider options
+          baseURL: "http://ordnung-headless-wordpress.local"
+        }
+      }
+    }
+  }
+  // redirect: [
+  //   {
+  //     from: '^.*(?<!\/)$',
+  //     to: (from, req) => req.url + '/'
+  //   }
+  // ]
   // For schema-org plugin
   // site: {
   //   identity: {
@@ -77,5 +102,4 @@ export default defineNuxtConfig({
   //     routes: ['/', '/sitemap.xml']
   //   }
   // },
-
 })
