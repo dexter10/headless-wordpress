@@ -3,6 +3,6 @@
         <NuxtLink to="/">
             <div className="text-5xl font-raleway font-bold">Nuxt WP</div>
         </NuxtLink>
+        <Icon name="IconsLogosWhatsapp" />
     </header>
-    <Icon name="IconsLogosWhatsapp" />
 </template>
