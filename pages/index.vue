@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { stringLiteral } from '@babel/types';
 
-const route = useRoute(); // Remove later
+const route = useRoute() // Remove later
 const config = useRuntimeConfig();
 const canonicalUrl = config.public.site.url + route.path;
 const defaultLocale = config.public.site.defaultLocale + route.path;
@@ -18,11 +18,7 @@ const { data: posts } = await useAsyncGql({
 });
 
 // Deconstruct posts
-// Type later
 const postsPaged: any = posts.value.posts?.nodes;
-
-console.log(postsPaged);
-
 
 // SEO query from WP general settings for frontpage blogs
 const { data: settings } = await useAsyncGql({
@@ -33,20 +29,6 @@ const { data: settings } = await useAsyncGql({
 const setting: any = settings.value.generalSettings;
 
 // console.log(setting);
-
-
-// Combine multiple queries?
-// const { data: data } = await useAsyncGql(
-//     async () => {
-//         const [posts, settings] = await Promise.all(
-//             $fetch(operation: 'Posts'),
-//             $fetch(operation: 'GeneralSettings')
-//         )
-//     }
-
-
-// )
-
 
 
 // useHead({
@@ -76,10 +58,10 @@ useSeoMeta({
 </script>
 
 <template>
-    <main>
+    <div>
         <TheHeader></TheHeader>
         <div class="grid gap-8 grid-cols-1 lg:grid-cols-3 p-6">
-            <Post class="post--single" v-for="post in postsPaged" :key="post.id" :post="post"></Post>
+            <Post v-for="post in postsPaged" :key:any="post.uri" :post="post"></Post>
         </div>
-    </main>
+    </div>
 </template>

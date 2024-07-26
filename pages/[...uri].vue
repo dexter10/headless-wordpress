@@ -26,9 +26,6 @@ const postData: any = await GqlInstance('Post', { uri: uri })
 // Destructure postData
 const post = postData.nodeByUri;
 
-console.log(post);
-
-
 // Declare date transform function from plugins/format-date.ts to avoid namespace conflicts with date formats between WP and Nuxt.
 const formatDate = useNuxtApp().$formatDate;
 

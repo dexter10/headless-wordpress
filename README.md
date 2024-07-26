@@ -139,7 +139,6 @@ allWpPost {
 Edges {
 Node {
 databaseId
-
 Title
 }
 }
@@ -149,21 +148,3 @@ $P$BvCpgwrPQg2vw3nQx3AJaOtlTeZ.6H.
 
 $P$BvCpgwrPQg2vw3nQx3AJaOtlTeZ
 
-
-const poopy = async () => {
-  const url = 'https://...';
-  try {
-    const response = await fetch(url, options);
-    const data = response.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-  return false;
-};
-
-const data = await poopie();4
-
-if (!data) {
-  // not poopie
-}
